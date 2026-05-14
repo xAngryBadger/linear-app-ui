@@ -22,9 +22,9 @@ export function IssueCard({ issue, onClick }: IssueCardProps) {
     data: { issue },
   })
 
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-  }
+  const style: React.CSSProperties = isDragging
+    ? { transform: CSS.Translate.toString(transform), zIndex: 50 }
+    : {}
 
   return (
     <div
@@ -36,7 +36,7 @@ export function IssueCard({ issue, onClick }: IssueCardProps) {
       {...listeners}
       {...attributes}
       onClick={() => onClick?.(issue.id)}
-      className={`group flex flex-col gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)] p-3 cursor-grab active:cursor-grabbing transition-shadow hover:shadow-md ${isDragging ? 'opacity-50 shadow-lg z-50' : ''}`}
+      className={`group flex flex-col gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)] p-3 cursor-grab active:cursor-grabbing ${isDragging ? 'opacity-50 shadow-lg' : 'hover:border-[var(--color-border-hover)]'}`}
     >
       <div className="flex items-start justify-between gap-2">
         <span className="text-[11px] font-mono text-[var(--color-text-3)]">
