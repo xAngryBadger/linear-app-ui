@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useUiStore } from '../stores/uiStore'
 import { useIssueStore } from '../stores/issueStore'
 import { useFilterStore } from '../stores/filterStore'
+import { popUndo } from './undo'
 
 type ShortcutAction = () => void
 
@@ -75,6 +76,13 @@ export function useShortcuts() {
       if (e.key === 'Escape') {
         e.preventDefault()
         closeDetail()
+        return
+      }
+
+      if (matchesEvent('cmd+z', e)) {
+        e.preventDefault()
+        const entry = popUndo()
+        if (entry) entry.undo()
         return
       }
 
