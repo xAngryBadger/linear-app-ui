@@ -20,12 +20,10 @@ interface IssueStore {
   getIssuesByTeam: (teamId: string) => Issue[]
 }
 
-let issueCounter = seedIssues.length
-
-function generateIdentifier(teamId: string, teams: typeof seedTeams): string {
+function generateIdentifier(teamId: string, teams: typeof seedTeams, issues: Issue[]): string {
   const team = teams.find((t) => t.id === teamId)
-  if (!team) return `UNK-${++issueCounter}`
-  const teamIssues = seedIssues.filter((i) => i.teamId === teamId)
+  if (!team) return `UNK-${Date.now()}`
+  const teamIssues = issues.filter((i) => i.teamId === teamId)
   const count = teamIssues.length + 1
   return `${team.key}-${count}`
 }
@@ -44,7 +42,7 @@ export const useIssueStore = create<IssueStore>((set, get) => ({
     const issue: Issue = {
       ...partial,
       id: `issue-${crypto.randomUUID()}`,
-      identifier: generateIdentifier(partial.teamId, state.teams),
+      identifier: generateIdentifier(partial.teamId, state.teams, state.issues),
       createdAt: now,
       updatedAt: now,
     }

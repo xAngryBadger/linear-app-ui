@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core'
 import { useDraggable } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
 import { PriorityIcon } from '../ui/PriorityIcon'
 import { Avatar } from '../ui/Avatar'
 import { StatusBadge } from '../ui/StatusBadge'
@@ -21,9 +22,9 @@ export function IssueCard({ issue, onClick }: IssueCardProps) {
     data: { issue },
   })
 
-  const style: React.CSSProperties = transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
-    : {}
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+  }
 
   return (
     <div

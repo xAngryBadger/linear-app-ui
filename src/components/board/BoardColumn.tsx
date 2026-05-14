@@ -1,4 +1,5 @@
 import { useDroppable } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { IssueCard } from './IssueCard'
 import { StatusBadge } from '../ui/StatusBadge'
 import type { Issue, Status } from '../../types'
@@ -29,16 +30,18 @@ export function BoardColumn({ status,  issues, onIssueClick }: BoardColumnProps)
         </span>
       </div>
 
-      <div className="flex flex-col gap-2 p-2 overflow-y-auto flex-1">
-        {issues.map((issue) => (
-          <IssueCard key={issue.id} issue={issue} onClick={onIssueClick} />
-        ))}
-        {issues.length === 0 && (
-          <div className="flex items-center justify-center py-8 text-xs text-[var(--color-text-3)]">
-            No issues
-          </div>
-        )}
-      </div>
+      <SortableContext items={issues.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+        <div className="flex flex-col gap-2 p-2 overflow-y-auto flex-1">
+          {issues.map((issue) => (
+            <IssueCard key={issue.id} issue={issue} onClick={onIssueClick} />
+          ))}
+          {issues.length === 0 && (
+            <div className="flex items-center justify-center py-8 text-xs text-[var(--color-text-3)]">
+              No issues
+            </div>
+          )}
+        </div>
+      </SortableContext>
     </div>
   )
 }

@@ -15,6 +15,7 @@ export function CommandMenu() {
   const setStatus = useFilterStore((s) => s.setStatus)
   const setPriority = useFilterStore((s) => s.setPriority)
   const createIssue = useIssueStore((s) => s.createIssue)
+  const teams = useIssueStore((s) => s.teams)
   const clearFilters = useFilterStore((s) => s.clearFilters)
 
   useEffect(() => {
@@ -91,15 +92,15 @@ export function CommandMenu() {
             <Command.Group heading="Actions" className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-3)] mt-2">
               <Command.Item
                 onSelect={() => {
-                  createIssue({
-                    title: 'New Issue',
-                    description: '',
-                    status: 'todo',
-                    priority: 'none',
-                    teamId: 'team-eng',
-                    assigneeId: null,
-                    labelIds: [],
-                  })
+        createIssue({
+          title: 'New Issue',
+          description: '',
+          status: 'todo',
+          priority: 'none',
+          teamId: teams[0]?.id ?? 'team-1',
+          assigneeId: null,
+          labelIds: [],
+        })
                   closePalette()
                 }}
                 className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--color-text-2)] rounded-md cursor-pointer data-[selected=true]:bg-[var(--color-bg-hover)] data-[selected=true]:text-[var(--color-text)]"

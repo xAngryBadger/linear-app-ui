@@ -55,7 +55,6 @@ const gKeyQueue: string[] = []
 let gKeyTimer: ReturnType<typeof setTimeout> | null = null
 
 export function useShortcuts() {
-  const togglePalette = useUiStore((s) => s.togglePalette)
   const toggleSidebar = useUiStore((s) => s.toggleSidebar)
   const closeDetail = useUiStore((s) => s.closeDetail)
   const openPalette = useUiStore((s) => s.openPalette)
@@ -66,12 +65,6 @@ export function useShortcuts() {
     (e: KeyboardEvent) => {
       const target = e.target as HTMLElement
       const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
-
-      if (matchesEvent('cmd+k', e)) {
-        e.preventDefault()
-        togglePalette()
-        return
-      }
 
       if (matchesEvent('cmd+\\', e)) {
         e.preventDefault()
@@ -136,7 +129,7 @@ export function useShortcuts() {
         }
       }
     },
-    [togglePalette, toggleSidebar, closeDetail, openPalette, createIssue, activeTeamId],
+    [toggleSidebar, closeDetail, openPalette, createIssue, activeTeamId],
   )
 
   return handleKeyDown
