@@ -1,4 +1,4 @@
-import { DndContext, DragOverlay, type DragStartEvent, type DragEndEvent, pointerWithin } from '@dnd-kit/core'
+import { DndContext, DragOverlay, type DragStartEvent, type DragEndEvent, pointerWithin, type Modifier } from '@dnd-kit/core'
 import { useState, useCallback, useMemo } from 'react'
 import { useIssueStore } from '../../stores/issueStore'
 import { useFilterStore } from '../../stores/filterStore'
@@ -6,6 +6,14 @@ import { useUiStore } from '../../stores/uiStore'
 import { BoardColumn } from './BoardColumn'
 import { DragOverlayCard } from './DragOverlay'
 import { STATUS_ORDER, type Status } from '../../types'
+
+const stripScale: Modifier = ({ transform }) => {
+  return {
+    ...transform,
+    scaleX: 1,
+    scaleY: 1,
+  }
+}
 
 export function BoardView() {
   const issues = useIssueStore((s) => s.issues)
@@ -77,9 +85,10 @@ export function BoardView() {
 
   return (
     <DndContext
-      collisionDetection={pointerWithin}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
+    collisionDetection={pointerWithin}
+    onDragStart={handleDragStart}
+    onDragEnd={handleDragEnd}
+    modifiers={[stripScale]}
     >
       <div className="flex h-full gap-4 p-4 overflow-x-auto">
         {columns.map((col) => (

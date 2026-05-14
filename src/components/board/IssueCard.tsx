@@ -1,5 +1,5 @@
 import { useDroppable } from '@dnd-kit/core'
-import { useDraggable } from '@dnd-kit/core'
+import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { PriorityIcon } from '../ui/PriorityIcon'
 import { Avatar } from '../ui/Avatar'
@@ -12,7 +12,7 @@ interface IssueCardProps {
 }
 
 export function IssueCard({ issue, onClick }: IssueCardProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: issue.id,
     data: { issue },
   })
@@ -23,8 +23,8 @@ export function IssueCard({ issue, onClick }: IssueCardProps) {
   })
 
   const style: React.CSSProperties = isDragging
-    ? { transform: CSS.Translate.toString(transform), zIndex: 50 }
-    : {}
+    ? { transform: CSS.Translate.toString(transform), transition: transition ?? undefined, zIndex: 50 }
+    : { transition: transition ?? undefined }
 
   return (
     <div
@@ -36,7 +36,7 @@ export function IssueCard({ issue, onClick }: IssueCardProps) {
       {...listeners}
       {...attributes}
       onClick={() => onClick?.(issue.id)}
-      className={`group flex flex-col gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)] p-3 cursor-grab active:cursor-grabbing ${isDragging ? 'opacity-50 shadow-lg' : 'hover:border-[var(--color-border-hover)]'}`}
+      className={`group flex flex-col gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-surface)] p-3 cursor-grab active:cursor-grabbing ${isDragging ? 'opacity-50 shadow-lg border-[var(--color-accent)]/50' : 'hover:border-[var(--color-border-hover)]'}`}
     >
       <div className="flex items-start justify-between gap-2">
         <span className="text-[11px] font-mono text-[var(--color-text-3)]">
